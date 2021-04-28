@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://webpack-basic/./src/js/main.js"],"names":["console","log"],"mappings":";;;;;AAAAA,OAAO,CAACC,GAAR,CAAY,+BAAZ,E","file":"bundle.js","sourcesContent":["console.log(\"getting-started-with-webpack!\");\n"],"sourceRoot":""}
