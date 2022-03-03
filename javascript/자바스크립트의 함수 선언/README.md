@@ -10,7 +10,7 @@
 
 원시 타입 인수는 call-by-value 로 동작한다. 즉, 함수 호출 시 전달받은 인수를 매개변수에 할당할 때 인수의 값을 복사하여 매개변수로 전달된다. 즉, 함수의 동작에 의해 전달받은 원시 타입 값은 변경되지 않는다.
 
-반래도, 객체형(참조형) 인수는 Call-by-reference 로 동작한다. 인수를 매개변수에 할당할 때 인수의 참조값을 매개변수에 저장한다. 즉, 함수의 동작에 의해 전달받은 참조형 인수값 또한 변경된다.
+반대로, 객체형(참조형) 인수는 Call-by-reference 로 동작한다. 인수를 매개변수에 할당할 때 인수의 참조값을 매개변수에 저장한다. 즉, 함수의 동작에 의해 전달받은 참조형 인수값 또한 변경된다.
 
 함수의 동작에 의해 특정 외부 상태가 변경되는 부수 효과 (side-effect)를 발생시키는 함수를 비순수 함수, 어떤 외부 상태도 변경하지 않는 함수를 순수 함수라 한다.
 
@@ -93,6 +93,69 @@ changeVal(num, obj);
 
 console.log(num); // 100
 console.log(obj); // Object {name: 'Kim', gender: 'female'}
+```
+
+**caller** 프로퍼티는 자신을 호출한 함수를 의미한다.
+
+```js
+function foo(func) {
+  var res = func();
+  return res;
+}
+
+function bar() {
+  return "caller : " + bar.caller;
+}
+
+console.log(foo(bar)); // caller : function foo(func) {...}
+console.log(bar()); // null (browser에서의 실행 결과)
+```
+
+**length** 프로퍼티는 함수 정의 시 작성된 매개변수 갯수를 가지고 있다. 여기서 주의할 점은 length 프로퍼티의 값은 arguments.length와는 다르다. arguments.length는 함수 호출시 인자의 갯수이다.
+
+```js
+function foo() {}
+console.log(foo.length); //0
+
+function bar(x) {
+  return x;
+}
+console.log(bar.length); //1
+```
+
+**name** 프로퍼티는 기명 함수의 경우 함수명을 값으로 가지고 있으며 익명함수의 경우 빈 문자열을 갖게 된다.
+
+```js
+// 기명 함수 표현식(named function expression)
+var namedFunc = function multiply(a, b) {
+  return a * b;
+};
+// 익명 함수 표현식(anonymous function expression)
+var anonymousFunc = function (a, b) {
+  return a * b;
+};
+
+console.log(namedFunc.name); // multiply
+console.log(anonymousFunc.name); // ''
+```
+
+### \_\_proto\_\_ 접근자 프로퍼티
+
+모든 객체는 [[Prototype]]이라는 내부 슬롯이 있다. [[Prototype]] 내부 슬롯은 프로토타입 객체를 가리킨다. 이는 프로토타입 기반 객체 지향 언어인 자바스크립트에서 상속을 구현하기 위해 사용된다.
+
+\_\_proto\_\_ 프로퍼티는 [[Prototype]] 내부 슬롯이 가리키는 프로토타입 객체에 접근하기 위해 사용하는 접근자 프로퍼티이다. 이는 객체가 직접 소유하는 프로퍼티가 아니라, 모든 객체의 프로토타입 객체인 Object.prototype 객체의 프로퍼티이다. 모든 객체는 상속을 통해 \_\_proto\_\_ 프로퍼티를 사용할 수 있다.
+
+```js
+console.log({}.__proto__ === Object.prototype); // true
+console.log(Object.getOwnPropertyDescriptor({}, "__proto__")); //undefined
+console.log(Object.getOwnPropertyDescriptor(Object.prototype, "__proto__")); //{get: ƒ, set: ƒ, enumerable: false, configurable: true}
+```
+
+추가적으로 다른 객체와는 다르게 함수 객체만이 prototype 프로퍼티를 소유하고 있다. 이는 함수가 객체를 사용하는 생성자 함수로 사용될 때, 생성자 함수가 생성한 인스턴스의 프로토타입 객체를 가리킨다.
+
+```js
+console.log(Object.getOwnPropertyDescriptor(function () {}, "prototype"));
+// {value: {…}, writable: true, enumerable: false, configurable: false}
 ```
 
 ### 함수 선언문
