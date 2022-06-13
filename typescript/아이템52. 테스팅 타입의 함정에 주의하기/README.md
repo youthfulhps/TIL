@@ -91,4 +91,74 @@ assertType<{ name: string }[]>(
 ); // OK
 ```
 
-(작성 중..)
+게다가, assertType에 함수를 넣어보면 이상한 결과가 나타난다.
+**함수는 매개변수가 더 적은 함수 타입에 할당 가능하기 때문이다.**
+
+```ts
+function assertType<T>(x: T) {}
+const add = (a: number, b: number) => a + b;
+assertType<(a: number, b: number) => number>(add); // OK
+
+const double = (x: number) => 2 * x;
+assertType<(a: number, b: number) => number>(double); // OK!?
+```
+
+```ts
+const g: (x: string) => any = () => 12; //OK!?
+```
+
+다시 assertType 문제로 돌아와 제대로 된 사용 방법을 적용해보자.
+다음 코드 처럼 `Parameters`와 `ReturnType` 제너릭 타입을
+이용해 함수의 매개변수 타입과 반환 타입만 분리하여 테스트할 수 있다.
+
+```ts
+const double = (x: number) => 2 * x;
+
+// 매개변수 타입 체크
+let p: Parameters<typeof double> = null!;
+assertType<[number, number]>(p);
+//                           ~ Argument of type '[number]' is not
+//                             assignable to parameter of type [number, number]
+// 반환 타입 체크
+let r: ReturnType<typeof double> = null!;
+assertType<number>(r); // OK
+```
+
+타입 시스템 내에서 암시적 any 타입을 발견해내는 것 또한 매우 어렵다.
+결국, 타입 체커와 독립적으로 동작하는 도구를 사용해서 타입 선언을 테스트하는
+방법이 권장된다.
+
+DefinitelyTyped의 타입 선언을 위한 도구는 dtslint이다.
+dtslint는 특별한 형태의 주석을 통해 동작한다.
+dtslint를 사용하면 beatles 관련 예제의 테스트를 다음처럼 작성할 수 있다.
+
+```ts
+declare function map<U, V>(
+  array: U[],
+  fn: (this: U[], u: U, i: number, array: U[]) => V
+): V[];
+const beatles = ["john", "paul", "george", "ringo"];
+map(
+  beatles,
+  function (
+    name, // $ExpectType string
+    i, // $ExpectType number
+    array // $ExpectType string[]
+  ) {
+    this; // $ExpectType string[]
+    return name.length;
+  }
+); // $ExpectType number[]
+```
+
+dtslint는 할당 가능성을 체크하는 대신 각 심벌의 타입을 추출하여
+글자 자체가 같은 지 비교한다.
+
+dtslint의 비교 과정은 편집기에서 타입 선언을 눈으로 보고 확인하는 것 같은데,
+dtslint는 이를 자동화한다.
+여전히 number|string, string|number는 같은 타입이지만, 글자로 비교했을 때
+차이가 있기 때문에 다른 타입으로 인식된다.
+
+타입 선언을 테스트한다는 것은 어렵지만 반드시 해야 하는 작업이다.
+앞에서 소개한 몇 가지 일반적인 기법의 문제점을 인지하고,
+문제점을 방지하기 위해 dtslint 같은 도구를 사용하자.
