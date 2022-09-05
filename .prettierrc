@@ -1,0 +1,12 @@
+{
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "parser": "markdown"
+      }
+    }
+  ],
+  "preserve": "always",
+  "printWidth": 80
+}
