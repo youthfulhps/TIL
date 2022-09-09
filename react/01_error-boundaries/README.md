@@ -255,6 +255,47 @@ export default class ErrorBoundary extends Component<Props, State> {
 }
 ```
 
+### 에러 경계가 캐치하지 못하는 에러
+
+에러 경계가 모든 에러를 캐치할 수 있는 것은 아니다. 가령, 자식에서가 아닌
+에러 경계 자체에서 발생하는 에러는 에러 경계에서 잡아낼 수 없다.
+
+대표적으로, 이벤트 핸들러에서 발생한 에러는 에러 경계에서 잡아낼 수 없다.
+이벤트 핸들러에서 발생한 에러가 `render`를 포함한 생명주기 메서드가 전개됨에
+있어 랜더링에 영향을 주지 않기 때문이다.
+
+리엑트 공식 문서에서는 이벤트 핸들러 내에서 발생하는 에러는 `try/catch`문을
+사용하도록 권하고 있다.
+
+```jsx
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    try {
+      // 에러를 던질 수 있는 무언가를 해야합니다.
+    } catch (error) {
+      this.setState({ error });
+    }
+  }
+
+  render() {
+    if (this.state.error) {
+      return <h1>Caught an error.</h1>;
+    }
+    return <button onClick={this.handleClick}>Click Me</button>;
+  }
+}
+```
+
+추가적으로, `setTimeout`, `requestAnimationFrame`과 같이 비동기적인 코드의
+콜백의 경우 에러 경계에서 에러를 잡아낼 수 없고, 서버 사이드 랜더링 과정에서 발생하는
+에러 또한 잡아낼 수 없다.
+
 ### Reference
 
 https://ko.reactjs.org/docs/error-boundaries.html
