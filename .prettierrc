@@ -3,10 +3,10 @@
     {
       "files": "*.md",
       "options": {
-        "parser": "markdown"
+        "parser": "markdown",
+        "printWidth": 100,
+        "preserve": "always"
       }
     }
-  ],
-  "preserve": "always",
-  "printWidth": 80
+  ]
 }
