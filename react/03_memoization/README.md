@@ -52,8 +52,7 @@ const HooksDispatcher...: Dispatcher = {
 
 `HooksDispatcher` 라는 객체명 뒤에 왜 `...` 을 붙였냐면,
 `HooksDispatcher`가 세 가지 케이스별로 각각 구분되어 구현되어
-있기 때문인데, 각각 `onMount`, `onRenderer`, `onUpdate` 키워드가
-붙어있기 때문인데, 우선 각각 상황에 따라 어떤 `HookDispatcher`가
+있기 때문인데, 우선 각각 상황에 따라 어떤 `HookDispatcher`가
 사용되겠거니 짐작하고 넘어가보자.
 
 ```js
@@ -65,6 +64,7 @@ const HooksDispatcherOnUpdate: Dispatcher = {...}
 ## Hook
 
 리엑트 내부에서 훅은 `Hook`이라는 인터페이스를 가진 객체를 통해 관리된다.
+미리 생김새를 보고 이후 글을 이해하면 좋을 것 같아 넣어둔다.
 
 ```ts
 export type Hook = {
@@ -80,9 +80,8 @@ export type Hook = {
 
 `useMemo()`, `useCallback()`은 모두 리엑트에서 메모이제이션을 쉽게
 구현할 수 있도록 도와주는 훅 API이다.
-
 `useMemo()`는 콜백 함수의 연산된 결과값을 메모이제이션하는 반면,
-`useCallback()`은 콜백 함수 자체를 메모이제이션한다. 
+`useCallback()`은 콜백 함수 자체를 메모이제이션한다.
 
 [react/packages/react-reconciler/ReactFiberHooks.new.js](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberHooks.new.js)에서의 `useMemo()`, `useCallback()`의 구현체들을 살펴보자.
 
