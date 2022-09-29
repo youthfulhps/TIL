@@ -1,4 +1,6 @@
-# unicode-range
+# font
+
+## 국문, 영문, 특수문자, 숫자에 각각 다른 폰트 적용은 어떻게 할 수 있을까
 
 최근 꽤나 당황스러웠던 기획 중 하나가, '한글에만 스포카산스네오, 영어, 특수문자는 BrownLL 적용해주세요!' 였다.
 [스포카산스네오](https://spoqa.github.io/spoqa-han-sans/ko-KR/)는 모든 유니코드에 적용가능한
@@ -41,6 +43,10 @@ font-family: 'Spoqa Han Sans Neo', 'BrownLL', 'sans-serif';
 사실, `unicode-range`의 주된 목적은 UI 컨텐츠 상에서 폰트페이스에 지정된 유니코드 범위내에 등록된 텍스트가
 없으면, 폰트 다운로드 요청을 하지 않는다고 한다. 웹 페이지를 로딩하는 과정에서 폰트를 선택적으로 다운로드하게
 되, 폰트 다운로드 비용을 최적화할 수 있는 장점이 있다.
+
+## 다양한 폰트 타입, 2022 기준 어떤 폰트 타입 파일을 사용해야 할까
+
+[What kind of font files do I need for modern browsers, Android and IOS?](https://stackoverflow.com/questions/37086562/what-kind-of-font-files-do-i-need-for-modern-browsers-android-and-ios)
 
 ## Reference
 
