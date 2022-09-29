@@ -48,6 +48,9 @@ font-family: 'Spoqa Han Sans Neo', 'BrownLL', 'sans-serif';
 
 [What kind of font files do I need for modern browsers, Android and IOS?](https://stackoverflow.com/questions/37086562/what-kind-of-font-files-do-i-need-for-modern-browsers-android-and-ios)
 
+## 폰트 파일 미리 로드하기
+
+[https://web.dev/codelab-preload-web-fonts/](https://web.dev/codelab-preload-web-fonts/)
 ## Reference
 
 [웹 폰트 사용과 최적화의 최근 동향](https://d2.naver.com/helloworld/4969726)
