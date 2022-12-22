@@ -111,16 +111,56 @@ HTML 4.01 : <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 HTML5     : <meta charset="UTF-8">
 ```
 
-(추가 정리)
-- 프로그레시브 웹 앱을 위한 favicon link
-- css, javascript 불러오기
-- 문서 기본 언어 설정
+## link
+
+### favicon
+
+웹 사이트를 대표하는 커스텀 아이콘 레퍼런스를 메타데이터에 추가하고 특정 컨텐츠에서
+보여지게 할 수 있다. 열린 페이지의 탭이나 북마크 패널 페이지에 아이콘을 보여줄 수 
+있다. 이를 favicon이라 한다.
+
+```html
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+```
+
+일반적인 모던 브라우저에서 .gif, .png 포멧 또한 favicon으로 사용 가능하지만,
+.ico 포멧을 사용하면 구 브라우저에서도 보장받을 수 있다.
+
+웹은 다양한 플랫폼과 디바이스에서 활용된다. 이에 따라 페비콘 또한 대응하여 지원할 수
+있다. 가령 iPad 홈 화면에 웹 페이지가 저장될 떄 앱 터치 아이콘 또한 페비콘으로
+제공할 수 있다.
+
+```html
+<!-- third-generation iPad with high-resolution Retina display: -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://developer.mozilla.org/static/img/favicon144.png">
+<!-- iPhone with high-resolution Retina display: -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://developer.mozilla.org/static/img/favicon114.png">
+<!-- first- and second-generation iPad: -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://developer.mozilla.org/static/img/favicon72.png">
+<!-- non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+<link rel="apple-touch-icon-precomposed" href="https://developer.mozilla.org/static/img/favicon57.png">
+<!-- basic favicon -->
+<link rel="shortcut icon" href="https://developer.mozilla.org/static/img/favicon32.png">
+```
+
+### css
+
+모던 웹 사이트는 많은 상호작용을 위해 자바스크립트가 필요하고, 스타일링을 위해 css가
+사용된다. 모두 link 혹은 script 태그를 통해 일반적으로 적용된다.
+
+rel을 통해 스타일시트임을 나타내고, 동시에 스타일 시트 파일의 경로를 포함하여 css를
+불러와 내포하여 사용한다.
+
+```html
+<link rel="stylesheet" href="my-css-file.css">
+```
 
 ## Reference
 
 - http://www.tcpschool.com/html-tag-attrs/meta-http-equiv
 - https://webclub.tistory.com/354
 - https://developers.google.com/search/docs/advanced/robots/robots_meta_tag?hl=ko#all
+- https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML#html_head%EB%9E%80
 
 
 
