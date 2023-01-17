@@ -62,7 +62,7 @@ _좀 많이 길어서 따로 정리가 필요하다._
 
 페이지가 크롤링되면 페이지의 내용을 파악하는 단계에 들어간다. 이 단계를 색인 생성이라 하고,
 
-<title> 요소에 포함되어 있는 컨텐츠를 시작으로 alt, 이미지, 동영상 등 텍스트와 핵심
+`<title>` 요소에 포함되어 있는 컨텐츠를 시작으로 alt, 이미지, 동영상 등 텍스트와 핵심
 컨텐츠 태그들을 중심으로 속성을 처리하고 페이지를 분석한다.
 
 _색인 생성 단계에서 다른 페이지와 중복된 페이지인지를 판단한다. 개인 블로그에서 URL을
@@ -115,6 +115,5 @@ _잘? 이면, m., amp.과 같이 특정 기기를 위한 페이지가 아니라,
 
 ### Reference
 
-https://developers.google.com/search?hl=ko
-
-https://www.sitemaps.org/ko/protocol.html
+- https://developers.google.com/search?hl=ko
+- https://www.sitemaps.org/ko/protocol.html
