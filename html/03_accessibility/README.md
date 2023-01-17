@@ -142,23 +142,6 @@
 </footer>
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Reference
 
 - https://developer.mozilla.org/ko/docs/Learn/Accessibility
