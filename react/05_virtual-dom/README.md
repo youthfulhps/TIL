@@ -147,32 +147,9 @@ key값을 통해 이전, 최신 엘리먼트 트리에서 동일한 컴포넌트
 이전에 사용된 3번의 아이템 컴포넌트 인스턴스를 그대로 사용하게 되고 의도한 랜더링 동작이 리엑트에
 요구되지 않을 수 있다.
 
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Reference
 
 - https://poiemaweb.com/js-dom
 - https://d2.naver.com/helloworld/59361
+- https://yceffort.kr/2022/04/deep-dive-in-react-rendering
 
