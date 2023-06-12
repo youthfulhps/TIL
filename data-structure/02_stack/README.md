@@ -8,6 +8,48 @@
 스택은 자바스크립트의 배열로서 쉽게 표현가능하지만, 몇가지 유틸성 메서드를 가지고 있는
 클래스로 구현해볼 수 있다.
 
-![Implement a stack using array](./images/array-stack.png)
+```js
+const stack = [];
 
-![Implement a stack using class](./images/class-stack.png)
+stack.push(1);
+stack.push(2);
+stack.push(3);
+
+console.log(stack); // [1, 2, 3]
+
+stack.pop(); // 3
+
+cconsole.log(stack); // [1, 2]
+
+const stackTop = stack[stack.length - 1]; 
+console.log(stackTop); // 2
+```
+
+```ts
+class Stack {
+  constructor(private data: any[]) {
+    this.data = data;
+  }
+  
+  public push(newElement) {
+    this.data.push(newElement);
+  }
+  
+  public pop() {
+    return this.data.pop();
+  }
+  
+  public top() {
+    return this.data[this.data.length - 1] ?? -1;
+  }
+}
+
+const stack = new Stack();
+
+stack.push(1);
+stack.push(2);
+stack.push(3);
+
+stack.pop(); // 3
+stack.top(); // 2
+```
