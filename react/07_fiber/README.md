@@ -78,7 +78,81 @@ fib(10)
 가지고 있으며 자신을 가리키고 있는 부모의 fiber 정보 또한 가지고 있다.
 
 Fiber 노드는 리엑트 컴포넌트의 인스턴스를 표현한다. 객체로 구성되어 있으며 해당 인터페이스는 [여기](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactInternalTypes.js#L83)
-서 확인 가능하다.
+서 확인 가능하다. 예시 컴포넌트를 콘솔 찍어보면, _owner 키의 값 객체에서 확인할 수 있는데 대표적인
+키값을 알아보자.
+
+```ts
+type Fiber = {
+  // 인스턴스 관련 항목
+  tag: WorkTag,
+  key: null | string,
+  type: any,
+
+  // 가상 스택 관련 항목
+  return: Fiber | null,
+  child: Fiber | null,
+  sibling: Fiber | null,
+
+  // 이펙트 관련 항목
+  flags: Flags,
+  nextEffect: Fiber | null,
+  firstEffect: Fiber | null,
+  lastEffect: Fiber | null,
+  alternate: Fiber | null,
+  |};
+```
+
+#### 1. 인스턴스 관련
+
+- `tag: WorkTag`, 해당 Fiber 노드가 대변하고 있는 컴포넌트 혹은 네이티브 요소의 인스턴스 유형을
+표현한다. 0-25 정수값으로 이루어져있고, 각각의 숫자는 FunctionComponent, ClassComponent, HostRoot
+등등을 표현하고 있는데, 자세한건 [ReactWorkTags.js](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactWorkTags.js)
+에서 확인 가능하다.
+- `key: null | string`, 해당 fiber가 가리키는 인스턴스의 고유한 식별자이다. 흔히 리스트형 컴포넌트에 부여하는 
+고유한 키와 동일한 역할이다.
+- `type: any`, 컴포넌트 혹은 네이비트 요소의 타입을 가지고 있다. `div`, `span`, `f ComponentA` 등등.
+루트노드의 fiber는 null
+
+key, type은 재조정 과정에서 해당 fiber의 키로 구분하고, 해당 fiber 인스턴스를 유지할 지 새롭게 fiber를 생성할지
+결정하는 역할을 한다. (재조정 디핑 과정에서 키, 타입을 통해 컴포넌트 인스턴스를 재사용할 건지 결정하는 것과 같음.)
+
+#### 2. 해당 fiber와 연관된 가상 스택 관련
+
+- `return: Fiber | null`, 해당 fiber의 부모격이 되는 fiber를 가리키고 있음. return값을 통해 현재 fiber의
+끝나면 다시 부모 fiber 작업으로 돌아가기 위한 포인터 역할
+- `child: Fiber | null`, 여러 자식들에 대한 fiber 중 첫 자식격이 되는 fiber를 가리키고 있음.
+- `sibling: Fiber | null`, 현재 fiber의 형제격이 되는 fiber를 가리킨다. child가 없으면 sibling이 가리키는
+노드로 탐색을 이어간다.
+
+**부모에서 첫 자식으로 이동, 첫 자식에서 자식이 있으면 자식으로, 없으면 자기의 형제격되는 fiber 노드로 이동하며 탐색,
+이렇게 되면 트리 구조에서 linked list로 탐색하는 게 가능해진다.**
+
+#### 3. 이펙트 관련
+
+변경점들에 대해 부수적으로 발생해야 하는 작업들 정보를 가지고 있다.
+
+- `flags: Flags`, 이펙트, 변화 유형을 유니크한 정수값으로 가지고 있는데 이를 비트맵으로 표현된 값을 가지고 있다.
+[ReactFiberFlags.js](https://github.com/facebook/react/blob/main/packages/react-reconciler/src/ReactFiberFlags.js)
+- `nextEffect: Fiber | null`, `lastEffect: Fiber | null`, 해당 fiber 하위에 있는 서브트리에서
+첫 이펙트를 가지고 있는 fiber와 마지막 이펙트를 가지고 있는 fiber를 가리킨다. 특정 fiber에서 이루어진 작업만
+일부 재사용하기 위해 사용된다. (이건 좀..)
+- `alternate: Fiber | null`, 해당 fiber의 교대 fiber. (이것도 좀..)
+
+트리 비교 작업이 끝나면 변경된 사항이 render -> commit -> phase를 통해 화면에 적용되는데 이떄 적용된 화면을
+대변하는 fiber를 `flushed fiber`, 이와 달리 화면에 적용하기 위해 열심히 작업 중인 상태의 fiber를 `workInProgress fiber`
+라고 부른다. 결국 특정 컴포넌트는 두 가지 버전의 fiber를 가질 수 있고, `alternate`가 대응되는 fiber를 가지고 있는 셈
+화면에 적용된 fiber는 work~ fiber를, 반대로는 flushed fiber를.
+
+
+
+
+
+
+엘리먼트의 타입을 명시한다. 네이티브
+
+엘리먼트의 타입을 표기한다.  
+
+
 
 1. type은 엘리먼트 타입을 표기한다. 네이비트 엘리먼트 타입 혹은 리엑트 컴포넌트 타입.
 2. key, 자식 엘리먼트가 가지는 유니크한 키.
