@@ -143,43 +143,40 @@ key, type은 재조정 과정에서 해당 fiber의 키로 구분하고, 해당 
 라고 부른다. 결국 특정 컴포넌트는 두 가지 버전의 fiber를 가질 수 있고, `alternate`가 대응되는 fiber를 가지고 있는 셈
 화면에 적용된 fiber는 work~ fiber를, 반대로는 flushed fiber를.
 
+## Fiber 메커니즘 동작
 
+Fiber의 재조정은 render, commit 두 단계로 구분된다. 
 
+- render, 두 fiber 트리를 비교하고 변경된 이펙트들을 수집하는 작업, 동시적으로 진행되고 중단, 양보, 재시작이
+가능한 단계이다. 스케쥴러에게 실행권을 위임받는 동안 동작하고 다시 메인스레드의 실행권을 양보하면서 더 급한 작업이
+있는지 확인한다. 우선순위가 높은 작업이 있던 없던 작업 가능한 시간은 대략 5ms 정도.
+**최종 목적은 이펙트 정보를 포함한 새로운 fiber 트리를 구축하는 것.**
+- commit, 새로운 fiber에 담긴 이펙트들을 모아 실제 DOM에 반영하는 작업. 이 단계는 취소, 일시 정지가 불가능한
+동기적인 작업 처리로 이루어짐.
 
+실제 구현체 로직 순서는 대략 다음과 같은데, 요약하자면.
 
+![Fiber reconciliation](./images/fiber-reconciliation.png)
 
-엘리먼트의 타입을 명시한다. 네이티브
+#### render
 
-엘리먼트의 타입을 표기한다.  
+1. 상태 변경
+2. alternate 트리의 루트 fiber를 workInProgress로 설정 후 beginWork 호출
+3. 해당 변경사항에 적절한 effect 유형을 표시해줌.
+4. 해당 fiber의 child fiber의 포인터를 따라 이동, child fiber를 workInProgress로 설정 후 다시 beginWork 호출
+5. 위 과정을 반복하며 최하단 fiber까지 완료 후 completeWork 호출해서 표시된 변경 effect 유형들을 취합함.
+6. 다시 return fiber로 돌아오는 과정에서 sibling이 있다면 sibling을 workInProgress로 설정 후 다시 beginWork 호출
+7. 위 과정을 반복해서 결국 루트로 돌아와 completeWork!.
 
+#### commit
 
+1. workInProgress fiber 트리에 화면에 반영되어야 하는 모든 이펙트들이 담겨있음.
+2. 해당 fiber 트리를 화면에 flush 해준다. 이 작업은 취소, 중단 불가
+3. 완료 후 루트의 current 포인터가 방금 flush한 트리를 가리키고 기존의 current 트리를 새로운 workInProgress 트리로 지정.
 
-1. type은 엘리먼트 타입을 표기한다. 네이비트 엘리먼트 타입 혹은 리엑트 컴포넌트 타입.
-2. key, 자식 엘리먼트가 가지는 유니크한 키.
-3. child, 자식 엘리먼트의 fiber를 가리킨다.
-```tsx
-function Parent() {
-  return <Child />
-}
-}
-```
+버튼 클릭으로 카운트업하는 이벤트 트리거에 대해 실행되는 로직들을 대략적으로 보면 위에 언급된 함수 호출 확인 가능.
 
-4. sibling, render가 반환하는 엘리먼트 목록
-```tsx
-function Parent() {
-  return [<Child />, <Child />]
-}
-```
-
-5. Return
-- type, 엘리먼트 타입을 표기한다. 네이티브 엘리먼트 혹은 리엑트 컴포넌트 타입
-- key, 자식 엘리먼트가 가지는 유니크한 키
-- child, Fiber의 child 키값의 인터페이스는 Fiber다. 
-  - ```ts
-    function Parent() {
-    return <Child />
-    }
-    ```
+![fiber performance](./images/fiber-performance.png)
 
 
 
