@@ -1,0 +1,14 @@
+{
+  "name": "npm",
+  "version": "1.0.0",
+  "description": "NPM package manager example project",
+  "main": "index.js",
+  "scripts": {
+    "log": "node scripts/log.js"
+  },
+  "author": "youthfulhps",
+  "license": "ISC",
+  "dependencies": {
+    "loadsh": "0.0.4"
+  }
+}
