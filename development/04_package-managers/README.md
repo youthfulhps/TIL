@@ -150,6 +150,94 @@ yarn에서 설치된 모든 것을 캐시에 저장한다 (`yarn/cache`). npm에
 특정 의존성 설치 성공 여부가 다른 의존성 설치에 독립적으로 설치되고, 실패한다면 설치 재요청을 한다.
 패키지 중복 생성 방지를 위해 서로 다른 버전의 종속성을 단일 버전으로 플랫하게 해결.
 
+## pnpm
+
+pnpm은 중첩된 의존성에 설치가 필요한 패키지에 대해 단 한번만 설치하고, 해당 의존성을 필요로 하는 패키지에
+[심링크](https://pnpm.io/ko/symlinked-node-modules-structure)로 가리켜 의존성을 해결한다.
+
+의존성의 종속 관계가 깊어짐에 따라 폴더 깊이가 깊어지고, 중속 의존성 설치에 대한 문제를 해결하고자 yarn, npm
+은 node_modules을 복잡한 계산을 통해 모든 의존성을 호이스팅시켜 플랫하게 구성한다. 
+의존성 깊이와 중복 설치에 대해 해결할 수 있는 좋은 방안이었지만, pnpm은 node_modules을 플랫하게 구성하지 않는다.
+
+pnpm은 `content-addressable-storage` 방식을 통해 사본이 복사되는 것을 방지하고, 디스크를 절약할 수 있게 한다.
+하나의 루트 폴더를 둔 두 프로젝트가 있다. 각각 의존성을 가지고 있는데, 우선 첫번째 데모의 의존성을 설치한다.
+
+```json
+{
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "csurf": "^1.10.0",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-session": "^1.17.0"
+  }  
+}
+
+{
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "csurf": "^.10.0",
+    "debug": "~2.6.9",
+    "powerbi-client": "^.16.5",
+    "rxjs": "^.5.3"
+  }
+}
+```
+
+```shell
+Packages: +68
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /Users/bhyoo436-fastfive/Library/pnpm/store/v3
+  Virtual store is at:             node_modules/.pnpm
+
+dependencies:
++ cookie-parser 1.4.4 (1.4.6 is available)
++ csurf 1.10.0 (1.11.0 is available)
++ debug 2.6.9 (4.3.4 is available)
++ ejs 2.6.1 (3.1.9 is available)
++ express 4.16.1 (4.18.2 is available)
++ express-session 1.17.0 (1.17.3 is available)
+
+Progress: resolved 68, reused 0, downloaded 68, added 68, done
+Done in 1.8s
+```
+
+```shell
+Packages: +17
++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /Users/bhyoo436-fastfive/Library/pnpm/store/v3
+  Virtual store is at:             node_modules/.pnpm
+
+dependencies:
++ cookie-parser 1.4.4 (1.4.6 is available)
++ csurf 1.10.0 (1.11.0 is available)
++ debug 2.6.9 (4.3.4 is available)
+
+Progress: resolved 17, reused 17, downloaded 0, added 17, done
+Done in 494ms
+```
+
+home 폴더의 글로벌 저장소 (~/.pnpm-store)에 패키지를 저장하는 중첩된 node_modules 폴더가 생성된다. 따라서 모든 버전의 dependencies은 해당 폴더에 
+물리적으로 한번만 저장되므로, single source of truth를 구성하고, 상당한 디스크 공간을 절약할 수 있다.
+
+이는 node_modules의 레이아웃을 통해 이루어지고, symlinks를 사용하여 dependencies의 중첩된 구조를 생성한다. 여기서 폴더 내부의 모든 패키지 파일은 
+저장소에 대한 하드 링크로 구성되어 있다.
+
+![Pnpm Node modules structure](./images/node-modules-structure.jpg)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
