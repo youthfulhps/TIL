@@ -9,6 +9,7 @@
   "author": "youthfulhps",
   "license": "ISC",
   "dependencies": {
-    "loadsh": "0.0.4"
+    "loadsh": "0.0.4",
+    "react": "^18.2.0"
   }
 }
