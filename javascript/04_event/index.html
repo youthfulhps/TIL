@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class="top">
+    top
+    <div class="middle">
+      middle
+      <div class="bottom">
+        bottom
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  const handler = function (e) {
+    const phases = ['capturing', 'target', 'bubbling'];
+    const node = this.nodeName + (this.className ? '.' + this.className : '');
+    // eventPhase: 이벤트 흐름 상에서 어느 phase에 있는지를 반환한다.
+    // 0 : 이벤트 없음 / 1 : 캡처링 단계 / 2 : 타깃 / 3 : 버블링 단계
+    console.log(node, phases[e.eventPhase - 1]);
+  };
+
+  document.querySelector('.top').addEventListener('click', handler, true);
+  document.querySelector('.middle').addEventListener('click', handler, true);
+  document.querySelector('.bottom').addEventListener('click', handler, true);
+</script>
+</html>
