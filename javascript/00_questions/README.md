@@ -2,3 +2,10 @@
    - [답변](../04_event/01_event-delegation.md)
 2. [this가 어떻게 동작하는지 설명하세요.](https://www.frontendinterviewhandbook.com/kr/javascript-questions#this%EA%B0%80-javascript%EC%97%90%EC%84%9C-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%9E%91%EB%8F%99%ED%95%98%EB%8A%94%EC%A7%80-%EC%84%A4%EB%AA%85%ED%95%98%EC%84%B8%EC%9A%94)
    - [답변](../05_this/README.md)
+3. [프로토타입 상속이 어떻게 이루어 지는가?](https://www.frontendinterviewhandbook.com/kr/javascript-questions#%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85-%EC%83%81%EC%86%8D%EC%9D%B4-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%9E%91%EB%8F%99%ED%95%98%EB%8A%94%EC%A7%80-%EC%84%A4%EB%AA%85%ED%95%98%EC%84%B8%EC%9A%94)
+4. [let, const, var의 차이점](https://www.frontendinterviewhandbook.com/kr/javascript-questions#let-var-const%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EC%83%9D%EC%84%B1%EB%90%9C-%EB%B3%80%EC%88%98%EB%93%A4%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94)
+   - [답변](../06_let-const-var/README.md)
+5. [호이스팅은 무엇인가?](https://www.frontendinterviewhandbook.com/kr/javascript-questions#%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85%EC%97%90-%EB%8C%80%ED%95%B4-%EC%84%A4%EB%AA%85%ED%95%98%EC%84%B8%EC%9A%94)
+   - [답변](../07_hoisting/README.md)
+6. [원시 타입 vs 객체 타입]
+   - [답변](../08_data-type/README.md)
