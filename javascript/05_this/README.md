@@ -143,6 +143,35 @@ Person.call(foo, 1, 2, 3);
 bind의 경우 ES5에 추가되었다. 함수에 인자로 전달한 this가 바인딩된 새로운 함수를 반환한다. 즉, apply, call과의 차이점은 바로 함수가
 호출되는 것이 아닌 함수를 반환받는다는 점이다.
 
+### 화살표 함수
+
+화살표 함수의 경우 ES6에 새롭게 추가되었다. 일반적으로 함수는 어떻게 호출되었는지에 따라 this에
+바인딩할 객체가 동적으로 결정되는데, 화살표 함수의 경우는 다르다.
+
+화살표 함수의 this는 언제나 상위 스코프의 this를 가리킨다. 이를 렉시컬 this라고 한다.
+
+```js
+function Prefixer(prefix) {
+  this.prefix = prefix;
+}
+
+Prefixer.prototype.prefixArray = function (arr) {
+  // this는 상위 스코프인 prefixArray 메소드 내의 this를 가리킨다.
+  return arr.map(x => `${this.prefix}  ${x}`);
+};
+
+const pre = new Prefixer('Hi');
+console.log(pre.prefixArray(['Lee', 'Kim']));
+```
+
+이러한 특성 때문에 화살표 함수의 사용을 피해야 하는 몇 가지 경우가 있다.
+
+#### 1. 메서드에서 화살표 함수를 사용하면 메서드를 소유하는 객체를 this에 바인딩하지 않게 된다.
+#### 2. 프로토타입의 메서드를 선언할때도 메서드와 동일한 문제가 발생한다.
+#### 3. 화살표 함수는 생성자 함수로서 사용할 수 없다. 화살표 함수는 prototype 프로퍼티를 가지고 있지 않다.
+#### 4. addEventListener 함수의 콜백 함수를 화살표 함수로 정의하게 되면 this가 상위 컨텍스트인 전역 객체 window를 가리키게 된다.
+
+
 
 
 
