@@ -50,6 +50,11 @@ const useContributionsCollectionQuery = (from: string, to: string) => {
 위와 같은 이슈때문에 등장하게 된 useSuspenseQuery는 Suspense로 감싸진 내부의 쿼리에 대해 성공을 보장하여
 데이터의 타입을 보장받을 수 있게 되었다.
 
+코드 분석
+
+각각의 쿼리는 QueryObserver라는 클래스의 인스턴스로 생성됨, 생성된 인스턴스에 옵션 중 shouldSuspend가 참으로 평가되면
+결과를 안기다리고 promise(fetchOptimistic)를 던짐. suspense에게 던진 promise가 resolve되면 랜더링
+
 ## Reference
 
 - https://tanstack.com/query/v4/docs/react/community/suspensive-react-query
